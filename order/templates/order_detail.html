@@ -1,0 +1,294 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Order Details{% endblock %}
+
+{% block body %}
+<style>
+  .order-detail-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 42px 20px 64px;
+  }
+
+  .detail-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    padding: 28px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgba(20, 43, 32, 0.94), rgba(37, 84, 61, 0.94));
+    box-shadow: 0 22px 52px rgba(0, 0, 0, 0.24);
+  }
+
+  .detail-hero h1 {
+    margin: 0 0 8px;
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .detail-hero p {
+    margin: 0;
+    color: #d7e8dc;
+  }
+
+  .detail-status {
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+    gap: 22px;
+  }
+
+  .detail-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    border: 1px solid rgba(24, 50, 36, 0.08);
+    padding: 22px;
+    box-shadow: 0 18px 38px rgba(17, 27, 22, 0.12);
+  }
+
+  .detail-panel h2 {
+    margin: 0 0 16px;
+    color: #173323;
+    font-size: 1.2rem;
+  }
+
+  .detail-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+  }
+
+  .detail-meta strong {
+    display: block;
+    color: #173323;
+    margin-bottom: 4px;
+  }
+
+  .detail-meta span,
+  .detail-note {
+    color: #4d6357;
+  }
+
+  .status-track {
+    display: grid;
+    gap: 12px;
+  }
+
+  .status-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #5a7165;
+    font-weight: 700;
+  }
+
+  .status-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: #c8d4cb;
+    flex: 0 0 auto;
+  }
+
+  .status-step.active {
+    color: #173323;
+  }
+
+  .status-step.active .status-dot {
+    background: #24523a;
+    box-shadow: 0 0 0 6px rgba(36, 82, 58, 0.12);
+  }
+
+  .items-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .item-card {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+    padding: 16px;
+    border-radius: 18px;
+    background: #f5f8f5;
+  }
+
+  .item-card img {
+    width: 92px;
+    height: 92px;
+    object-fit: cover;
+    border-radius: 16px;
+    background: #dbe6dd;
+  }
+
+  .item-card h3 {
+    margin: 0 0 6px;
+    color: #173323;
+    font-size: 1.02rem;
+  }
+
+  .item-card p {
+    margin: 0;
+    color: #557064;
+  }
+
+  .item-price {
+    text-align: right;
+    color: #173323;
+    font-weight: 900;
+  }
+
+  .summary-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: #3e5a4a;
+  }
+
+  .summary-row.total {
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px solid #d7e1d9;
+    color: #173323;
+    font-size: 1.08rem;
+    font-weight: 900;
+  }
+
+  @media (max-width: 900px) {
+    .detail-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .item-card {
+      grid-template-columns: 1fr;
+    }
+
+    .item-price {
+      text-align: left;
+    }
+  }
+</style>
+
+<section class="order-detail-shell">
+  <div class="detail-hero">
+    <div>
+      <h1>Order #{{ order.id }}</h1>
+      <p>Placed on {{ order.create_at|date:"M d, Y" }} and updated on {{ order.update_at|date:"M d, Y" }}</p>
+    </div>
+    <div class="detail-status">{{ order.status }}</div>
+  </div>
+
+  <div class="detail-grid">
+    <div>
+      <div class="detail-panel" style="margin-bottom: 22px;">
+        <h2>Delivery Details</h2>
+        <div class="detail-meta">
+          <div>
+            <strong>Name</strong>
+            <span>{{ order.name }} {{ order.surname }}</span>
+          </div>
+          <div>
+            <strong>Phone</strong>
+            <span>{{ order.phone }}</span>
+          </div>
+          <div>
+            <strong>City</strong>
+            <span>{{ order.city }}</span>
+          </div>
+          <div>
+            <strong>Address</strong>
+            <span>{{ order.address }}</span>
+          </div>
+        </div>
+        <div class="detail-note" style="margin-top: 14px;">
+          <strong style="color:#173323;">Order Note</strong><br>
+          {% if order.note %}{{ order.note }}{% else %}No extra note was added for this order.{% endif %}
+        </div>
+      </div>
+
+      <div class="detail-panel">
+        <h2>Ordered Items</h2>
+        {% if items %}
+          <div class="items-list">
+            {% for item in items %}
+              <div class="item-card">
+                {% if item.product.display_image_url %}
+                  <img src="{{ item.product.display_image_url }}" alt="{{ item.product.name }}">
+                {% else %}
+                  <img src="{% static 'shop/images/avatar.svg' %}" alt="{{ item.product.name }}">
+                {% endif %}
+                <div>
+                  <h3>{{ item.product.name }}</h3>
+                  <p>{{ item.product.category.name }}{% if item.product.subCategory %} · {{ item.product.subCategory.name }}{% endif %}</p>
+                  <p>Recorded on {{ item.create_at|date:"M d, Y" }}</p>
+                </div>
+                <div class="item-price">
+                  <div>Rs. {{ item.total }}</div>
+                  <small style="color:#5a7165; font-weight:700;">Unit: Rs. {{ item.price }}</small>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p style="color:#557064; margin:0;">No order items were found for this order.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div>
+      <div class="detail-panel" style="margin-bottom: 22px;">
+        <h2>Tracking Status</h2>
+        <div class="status-track">
+          {% for step in status_steps %}
+            <div class="status-step{% if forloop.counter0 <= current_step %} active{% endif %}">
+              <span class="status-dot"></span>
+              <span>{{ step }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="detail-panel">
+        <h2>Order Summary</h2>
+        <div class="summary-list">
+          <div class="summary-row">
+            <span>Order ID</span>
+            <span>#{{ order.id }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Items</span>
+            <span>{{ item_count }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Status</span>
+            <span>{{ order.status }}</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total Paid</span>
+            <span>Rs. {{ subtotal }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

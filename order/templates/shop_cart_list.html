@@ -1,0 +1,130 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block title %} Shop Cart List{% endblock %}
+{% block css %}
+<link href="{%static 'shop/css/shoppingcart.css' %}" rel="stylesheet">
+
+<style>
+  body { background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%); }
+  
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 20px; }
+  
+  .heading { margin-bottom: 28px; }
+  
+  .heading h1 { color: #2C3E50 !important; font-weight: 800 !important; font-size: 2rem; }
+  
+  .heading .continue { background: linear-gradient(135deg, #FF8C42, #E67E22) !important; color: #ffffff !important; border-radius: 12px !important; padding: 12px 24px !important; text-decoration: none; }
+  
+  .cart { background: #ffffff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1); margin-bottom: 20px; }
+  
+  .cartWrap { list-style: none; padding: 0; }
+  
+  .items { border-bottom: 1px solid #ECF0F1; padding: 16px 0; }
+  
+  .items:last-child { border-bottom: none; }
+  
+  .items h3 { color: #2C3E50 !important; font-weight: 700; }
+  
+  .itemNumber, .stockStatus { color: #7f8c8d !important; }
+  
+  .cartWrap .qty, .items input.qty { border: 2px solid #ECF0F1 !important; border-radius: 8px !important; padding: 8px 12px; color: #2C3E50; }
+  
+  .remove { color: #E67E22; font-weight: 700; text-decoration: none; }
+  
+  .promoCode { background: #ffffff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1); margin-bottom: 20px; }
+  
+  .promoCode label { color: #2C3E50; font-weight: 600; }
+  
+  .promoCode input { border: 2px solid #ECF0F1 !important; border-radius: 12px !important; padding: 10px 16px; color: #2C3E50; }
+  
+  .alert { margin: 16px 0; padding: 12px 14px; border-radius: 12px; }
+  .alert.success { background: #e6ffed; color: #12592f; border: 1px solid #8bd59b; }
+  .alert.error { background: #ffe6e6; color: #a11; border: 1px solid #e28b8b; }
+  .promoApplied { margin-top: 10px; color: #2C3E50; font-weight: 600; }
+  
+  .subtotal { background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 16px; padding: 24px; box-shadow: 0 6px 20px rgba(44, 62, 80, 0.15); }
+  
+  .totalRow { color: #ffffff !important; font-weight: 600 !important; }
+  
+  .totalRow.final { color: #FF8C42 !important; font-size: 1.3rem; font-weight: 800 !important; }
+  
+  .totalRow .btn { background: linear-gradient(135deg, #FF8C42, #E67E22) !important; color: #ffffff !important; border-radius: 12px !important; padding: 12px 24px !important; box-shadow: 0 4px 12px rgba(255, 140, 66, 0.2) !important; }
+  
+  .totalRow .btn:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 20px rgba(255, 140, 66, 0.35) !important; }
+
+  /* Protect header cart icon from page styles */
+  .wthreecartaits { position: relative !important; }
+  .wthreecartaits .qty { position: absolute !important; top: -8px !important; right: -8px !important; background: #FF8C42 !important; color: white !important; width: 26px !important; height: 26px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 12px !important; font-weight: 700 !important; box-shadow: 0 3px 8px rgba(255, 140, 66, 0.3) !important; border: none !important; padding: 0 !important; }
+  .w3view-cart { background: linear-gradient(135deg, #007bff, #0056b3) !important; color: white !important; padding: 12px 14px !important; border-radius: 10px !important; font-size: 18px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+  .w3view-cart i { font-size: 18px !important; }
+</style>
+{% endblock %}
+{% block body %}
+
+    <div class="wrap cf">
+  <div class="heading cf">
+    <h1>My Cart</h1>
+    <a href="{% url 'shop:shophome' %}" class="continue">Continue Shopping</a>
+  </div>
+  <div class="cart">
+    <ul class="cartWrap">
+        {% for rs in shopcart %}
+      <li class="items even">
+    <div class="infoWrap">
+        <div class="cartSection">
+        <img src="{{rs.product.display_image_url}}" alt="" class="itemImg" />
+          <p class="itemNumber">#QUE-007544-002</p>
+          <h3>{{rs.product.name}}</h3>
+
+           <p> <input type="text"  class="qty" placeholder="{{rs.quantity}}"/>  X <del>Rs.{{rs.product.price}}</del> Rs.{{ rs.product.discount_price }}</p>
+
+        </div>
+
+        <div class="prodTotal cartSection">
+          <p class="stockStatus">= Rs. {{ rs.amount }}</p>
+        </div>
+              <div class="cartSection removeWrap">
+           <a href="/order/deletefromcart/{{ rs.id }}" class="remove">x</a>
+        </div>
+      </div>
+      </li>
+        {% endfor %}
+
+
+    </ul>
+  </div>
+
+  {% if messages %}
+    <div class="promoMessage">
+      {% for message in messages %}
+        <div class="alert {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="promoCode">
+    <form method="post" action="/order/apply-promo" class="promoForm">
+      {% csrf_token %}
+      <label for="promo">Have A Promo Code?</label>
+      <input type="text" id="promo" name="promo_code" placeholder="Enter Code" value="{{ promo_code|default:'' }}" />
+      <button type="submit" class="btn">Apply</button>
+    </form>
+    {% if promo_code %}
+      <p class="promoApplied">Applied: {{ promo_code }} ({{ discount_percent }}% off)</p>
+      <p class="promoApplied">Discount: Rs. {{ discount_amount|floatformat:2 }}</p>
+    {% endif %}
+  </div>
+
+  <div class="subtotal cf">
+    <ul>
+      <li class="totalRow"><span class="label">Subtotal</span><span class="value">Rs. {{ carttotal }}</span></li>
+
+          <li class="totalRow"><span class="label">Shipping</span><span class="value">Free Shipping</span></li>
+
+            <li class="totalRow"><span class="label">Tax</span><span class="value">{{carttax}}</span></li>
+            <li class="totalRow final"><span class="label">Total</span><span class="value">{{cartwithtax }}</span></li>
+      <li class="totalRow"><a href="/order/checkout" class="btn continue">Checkout</a></li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

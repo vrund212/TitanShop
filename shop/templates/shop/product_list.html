@@ -1,0 +1,205 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+  .products-shell {
+    padding: 40px 0 56px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
+  }
+
+  .products-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    margin-bottom: 32px;
+    color: #2c3e50;
+  }
+
+  .products-header h1 {
+    margin: 0;
+    color: #2c3e50;
+    font-weight: 800;
+    font-size: 2.2rem;
+  }
+
+  .products-header p {
+    margin: 6px 0 0;
+    color: #7f8c8d;
+    font-size: 1rem;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+  }
+
+  .product-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 32px rgba(255, 140, 66, 0.15);
+    border-top: 4px solid #FF8C42;
+  }
+
+  .product-thumb {
+    height: 240px;
+    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-thumb::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,140,66,0.1) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .product-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover .product-thumb img {
+    transform: scale(1.08);
+  }
+
+  .product-copy {
+    padding: 20px;
+    color: #2c3e50;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-copy h3 {
+    margin: 0 0 12px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1.3;
+  }
+
+  .product-copy p {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    min-height: 50px;
+    margin: 0 0 12px;
+  }
+
+  .product-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .product-stats span {
+    background: linear-gradient(135deg, #FF8C42, #E67E22);
+    border-radius: 20px;
+    padding: 4px 12px;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .product-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #ecf0f1;
+  }
+
+  .product-price {
+    color: #FF8C42;
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+
+  .product-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FF8C42, #E67E22);
+    color: #ffffff;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+  }
+
+  .product-btn:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(255, 140, 66, 0.3);
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container products-shell">
+  <div class="products-header">
+    <div>
+      <h1>All Products</h1>
+      <p>{{ product_list|length }} product{{ product_list|length|pluralize }} available to browse.</p>
+    </div>
+  </div>
+
+  {% if product_list %}
+    <div class="products-grid">
+      {% for product in product_list %}
+        <div class="product-card">
+          <a href="{% url 'shop:product_detail' product.id %}">
+            <div class="product-thumb">
+              {% if product.display_image_url %}
+                <img src="{{ product.display_image_url }}" alt="{{ product.name }}">
+              {% else %}
+                <img src="{% static 'shop/images/avatar.svg' %}" alt="{{ product.name }}">
+              {% endif %}
+            </div>
+          </a>
+          <div class="product-copy">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description|truncatechars:110 }}</p>
+            <div class="product-stats">
+              <span>{{ product.review_set.count }} review{{ product.review_set.count|pluralize }}</span>
+              <span>{{ product.average_rating|floatformat }} rating</span>
+              <span>{{ product.category.name }}</span>
+            </div>
+            <div class="product-actions">
+              <span class="product-price">Rs. {{ product.price }}</span>
+              <a class="product-btn" href="{% url 'shop:product_detail' product.id %}">View Product</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="color:white;">No products are available.</p>
+  {% endif %}
+</div>
+{% endblock %}

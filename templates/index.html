@@ -1,0 +1,344 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>TitanShop - Welcome</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="https://a.espncdn.com/i/teamlogos/ncaa/500/2239.png" />
+  <link rel="shortcut icon" type="image/png" href="https://a.espncdn.com/i/teamlogos/ncaa/500/2239.png" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" />
+
+  <style>
+    :root {
+      --brand: #FF8C42;
+      --brand-deep: #2C3E50;
+      --ink: #f8fafc;
+      --muted: #95A5A6;
+      --panel: rgba(44, 62, 80, 0.12);
+      --panel-strong: rgba(44, 62, 80, 0.18);
+      --ring: rgba(255, 140, 66, 0.2);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, #0f172a 0%, #1e293b 100%),
+        radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.1) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(120deg, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.1)),
+        repeating-linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.03) 0,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 2px,
+          transparent 16px
+        );
+      pointer-events: none;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      margin: 0;
+      padding: 32px 24px 48px;
+    }
+
+    .topbar,
+    .hero {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #2C3E50, #34495E);
+      box-shadow: 0 6px 20px rgba(44, 62, 80, 0.15);
+      margin-bottom: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .brand {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+    }
+
+    .toplinks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: flex-end;
+    }
+
+    .toplinks a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: rgba(255, 140, 66, 0.1);
+      border: 1px solid rgba(255, 140, 66, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .toplinks a:hover {
+      background: linear-gradient(135deg, #FF8C42, #E67E22);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      border: 1px solid var(--ring);
+      border-radius: 28px;
+      padding: clamp(28px, 5vw, 64px);
+      background: linear-gradient(145deg, var(--panel-strong), rgba(255, 255, 255, 0.08));
+      box-shadow: 0 30px 80px rgba(15, 23, 42, 0.28);
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      border-radius: 999px;
+      padding: .55rem 1rem;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 18px;
+    }
+
+    .title {
+      font-size: clamp(2.4rem, 5vw, 4.4rem);
+      font-weight: 800;
+      line-height: 1.02;
+      margin: 0 0 16px;
+      max-width: 12ch;
+    }
+
+    .title .accent { color: #FF8C42; }
+
+    .titans-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: min(100%, 360px);
+      margin-left: auto;
+    }
+
+    .titans-logo img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 24px rgba(15, 23, 42, 0.24));
+    }
+
+    .sub {
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      line-height: 1.7;
+      margin-bottom: 26px;
+    }
+
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      padding: 1rem 1.4rem;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-pill:hover {
+      transform: translateY(-2px);
+      text-decoration: none;
+      box-shadow: 0 12px 28px rgba(255, 140, 66, 0.3);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #FF8C42, #E67E22);
+      color: white;
+      box-shadow: 0 8px 20px rgba(255, 140, 66, 0.25);
+    }
+
+    .btn-primary:hover {
+      color: white;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: white;
+      border: 2px solid #FF8C42;
+    }
+
+    .btn-ghost:hover {
+      background: linear-gradient(135deg, #FF8C42, #E67E22);
+      border-color: #E67E22;
+      color: white;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(220px, .75fr);
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero-copy {
+      text-align: left;
+    }
+
+    .hero-art {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .chips {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      padding: .85rem 1rem;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .foot {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .foot a {
+      color: #bfdbfe;
+      text-decoration: none;
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .toplinks { justify-content: flex-start; }
+      .titans-logo {
+        width: min(100%, 220px);
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">TitanShop</div>
+      <div class="toplinks">
+        {% if request.user.is_authenticated %}
+          <a href="/profiles/"><i class="fa fa-user"></i> {{ request.user }}</a>
+          <a href="/shop/logout/"><i class="fa fa-sign-out"></i> Logout</a>
+        {% else %}
+          <a href="/shop/login/"><i class="fa fa-sign-in"></i> Login</a>
+          <a href="/shop/signup/"><i class="fa fa-user-plus"></i> Sign up</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <main class="hero" role="main" aria-label="TitanShop book marketplace welcome">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow"><span>Books</span> Campus Book Market</div>
+          <h1 class="title">
+            {% if current_language == 'es' %}
+              Bienvenido a tu centro de <span class="accent">compra y venta</span> de libros
+            {% elif current_language == 'hi' %}
+              Books ke liye aapke <span class="accent">buy and sell</span> hub mein swagat hai
+            {% else %}
+              Welcome to your <span class="accent">buy and sell</span> hub for books
+            {% endif %}
+          </h1>
+          <p class="sub">
+            {% if current_language == 'es' %}
+              Encuentra libros de texto asequibles, explora por categoria y publica tus propios libros en un mercado estudiantil Titan mas limpio.
+            {% elif current_language == 'hi' %}
+              Saste textbooks dhoondhiye, category ke hisab se browse kijiye, aur apni books ko ek saaf Titan student marketplace mein list kijiye.
+            {% else %}
+              Find affordable textbooks, browse by category, and list your own books in a cleaner Titan-focused student marketplace.
+            {% endif %}
+          </p>
+
+          <div class="cta">
+            <a class="btn-pill btn-primary" href="/shop/">
+              {% if current_language == 'es' %}Explorar libros{% elif current_language == 'hi' %}Books browse karein{% else %}Browse Books{% endif %}
+            </a>
+            <a class="btn-pill btn-ghost" href="/shop/product_list/">
+              {% if current_language == 'es' %}Ver productos{% elif current_language == 'hi' %}Products dekhein{% else %}View Products{% endif %}
+            </a>
+          </div>
+
+          <div class="chips">
+            <div class="chip">{% if current_language == 'es' %}Usuarios verificados del campus{% elif current_language == 'hi' %}Verified campus users{% else %}Verified campus users{% endif %}</div>
+            <div class="chip">{% if current_language == 'es' %}Fotos reales del producto{% elif current_language == 'hi' %}Real product photos{% else %}Real product photos{% endif %}</div>
+            <div class="chip">{% if current_language == 'es' %}Calificaciones y resenas{% elif current_language == 'hi' %}Ratings and reviews{% else %}Ratings and reviews{% endif %}</div>
+            <div class="chip">{% if current_language == 'es' %}Recogida local rapida{% elif current_language == 'hi' %}Fast local pickup flow{% else %}Fast local pickup flow{% endif %}</div>
+          </div>
+
+          <div class="foot">
+            {% if current_language == 'es' %}Necesitas algo mas?{% elif current_language == 'hi' %}Kuch aur chahiye?{% else %}Need something else?{% endif %}
+            <a href="/about/">{% if current_language == 'es' %}Contacto{% elif current_language == 'hi' %}Contact{% else %}About{% endif %}</a> ·
+            <a href="/profiles/">{% if current_language == 'es' %}Perfil{% elif current_language == 'hi' %}Profile{% else %}Profile{% endif %}</a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <a class="titans-logo" href="https://1000logos.net/cal-state-fullerton-titans-logo/" target="_blank" rel="noopener noreferrer" aria-label="Cal State Fullerton Titans logo">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cal%20State%20Fullerton%20Titans%20logo.svg" alt="Cal State Fullerton Titans logo">
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block body %}
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .product-detail-page {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
+    min-height: 100vh;
+    padding: 48px 0 72px;
+    overflow-x: hidden;
+  }
+
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  .product-shell {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 40px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .product-hero {
+    display: grid;
+    grid-template-columns: minmax(320px, 1fr) minmax(320px, 1.1fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  .product-panel {
+    background: #ffffff;
+    border: none;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .product-panel:hover {
+    box-shadow: 0 12px 28px rgba(255, 140, 66, 0.15);
+  }
+
+  .product-image-wrap {
+    padding: 26px;
+  }
+
+  .product-image-frame {
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-copy {
+    padding: 30px;
+  }
+
+  .product-kicker {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #FF8C42, #E67E22);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .product-copy h1 {
+    margin: 18px 0 12px;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.05;
+    color: #2C3E50;
+  }
+
+  .product-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+    color: #7f8c8d;
+    font-size: 0.95rem;
+  }
+
+  .product-price {
+    display: flex;
+    align-items: end;
+    gap: 12px;
+    margin: 18px 0;
+  }
+
+  .product-price strong {
+    font-size: 2rem;
+    color: #FF8C42;
+    font-weight: 800;
+  }
+
+  .product-price del {
+    color: #95A5A6;
+    font-size: 1rem;
+  }
+
+  .product-description {
+    color: #2C3E50;
+    line-height: 1.75;
+    margin-bottom: 26px;
+  }
+
+  .product-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .stat-card {
+    background: #ECF0F1;
+    border-radius: 12px;
+    padding: 16px;
+    border-left: 4px solid #FF8C42;
+  }
+
+  .stat-card span {
+    display: block;
+    color: #7f8c8d;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .stat-card strong {
+    color: #2C3E50;
+    font-size: 1.1rem;
+  }
+
+  .purchase-form,
+  .review-form,
+  .review-list {
+    margin-top: 32px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .purchase-form form,
+  .review-form form {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .quantity-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .quantity-row input,
+  .review-form select,
+  .review-form textarea {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    border: 2px solid #ECF0F1;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 1rem;
+    background: #ffffff;
+    color: #2C3E50;
+    transition: all 0.3s ease;
+  }
+
+  .quantity-row input:focus,
+  .review-form select:focus,
+  .review-form textarea:focus {
+    border-color: #FF8C42;
+    box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+    outline: none;
+  }
+
+  .quantity-field {
+    width: 140px;
+  }
+
+  .primary-button {
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #FF8C42, #E67E22);
+    color: #ffffff;
+    font-weight: 700;
+    padding: 14px 22px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 16px rgba(255, 140, 66, 0.2);
+  }
+
+  .primary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(255, 140, 66, 0.35);
+  }
+
+  .section-heading {
+    margin-bottom: 16px;
+    color: #2C3E50;
+    font-size: 1.45rem;
+    font-weight: 700;
+  }
+
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  .review-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  .review-card {
+    background: #ffffff;
+    border: 1px solid #ECF0F1;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .review-card:hover {
+    box-shadow: 0 6px 16px rgba(255, 140, 66, 0.1);
+  }
+
+  .review-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .review-head strong {
+    color: #2C3E50;
+  }
+
+  .review-head span {
+    color: #95A5A6;
+    font-size: 0.92rem;
+  }
+
+  .review-rating {
+    color: #FF8C42;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .empty-state {
+    background: #ECF0F1;
+    border: 2px dashed #BDC3C7;
+    border-radius: 12px;
+    padding: 24px;
+    color: #7f8c8d;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  @media (max-width: 920px) {
+    .product-hero {
+      grid-template-columns: 1fr;
+    }
+
+    .product-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .product-detail-page {
+      padding-top: 24px;
+    }
+
+    .product-shell {
+      padding: 0 16px;
+    }
+
+    .product-copy,
+    .product-image-wrap {
+      padding: 18px;
+    }
+
+    .product-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .quantity-field {
+      width: 100%;
+    }
+  }
+</style>
+
+<section class="product-detail-page">
+  <div class="product-shell">
+    <div class="product-hero">
+      <div class="product-panel product-image-wrap">
+        <div class="product-image-frame">
+          {% if product.display_image_url %}
+            <img src="{{ product.display_image_url }}" alt="{{ product.name }}">
+          {% else %}
+            <img src="{% static 'shop/images/avatar.svg' %}" alt="{{ product.name }}">
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="product-panel product-copy">
+        <div class="product-kicker">
+          <span>{{ product.category }}</span>
+          <span>{{ product.subCategory }}</span>
+        </div>
+
+        <h1>{{ product.name }}</h1>
+
+        <div class="product-meta">
+          <span>{{ product.review_set.count }} review{{ product.review_set.count|pluralize }}</span>
+          <span>{{ product.average_rating|floatformat:1 }}/5 rating</span>
+          <span>Updated {{ product.updated|date:"M d, Y" }}</span>
+        </div>
+
+        <div class="product-price">
+          <strong>Rs. {{ product.discount_price|default:product.price }}</strong>
+          {% if product.discount_price %}
+            <del>Rs. {{ product.price }}</del>
+          {% endif %}
+        </div>
+
+        <div class="product-description">
+          {% if product.description %}
+            <p>{{ product.description }}</p>
+          {% else %}
+            <p>This product is available now. Add it to your cart or leave a review after trying it.</p>
+          {% endif %}
+        </div>
+
+        <div class="product-stats">
+          <div class="stat-card">
+            <span>Availability</span>
+            <strong>{% if product.available %}In Stock{% else %}Unavailable{% endif %}</strong>
+          </div>
+          <div class="stat-card">
+            <span>Units Left</span>
+            <strong>{{ product.stock }}</strong>
+          </div>
+          <div class="stat-card">
+            <span>Category</span>
+            <strong>{{ product.category }}</strong>
+          </div>
+          <div class="stat-card">
+            <span>Subcategory</span>
+            <strong>{{ product.subCategory }}</strong>
+          </div>
+        </div>
+
+        <div class="purchase-form">
+          <h2 class="section-heading">Add To Cart</h2>
+          <form action="/order/addtocart/{{ product.id }}" method="post">
+            {% csrf_token %}
+            <div class="quantity-row">
+              <div class="quantity-field">
+                <input
+                  type="number"
+                  name="quantity"
+                  id="id_quantity"
+                  value="1"
+                  min="1"
+                  max="{{ product.stock }}"
+                  required
+                >
+              </div>
+              <button type="submit" class="primary-button">Add to Cart</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-list">
+      <h2 class="section-heading">Customer Reviews</h2>
+      {% if product.review_set.all %}
+        <div class="review-grid">
+          {% for review in product.review_set.all %}
+            <article class="review-card">
+              <div class="review-head">
+                <strong>{{ review.user_name }}</strong>
+                <span>{{ review.pub_date|date:"M d, Y" }}</span>
+              </div>
+              <div class="review-rating">Rated {{ review.rating }}/5</div>
+              <p>{{ review.comment }}</p>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state">No reviews yet. Be the first to share how this product worked for you.</div>
+      {% endif %}
+    </div>
+
+    <div class="review-form">
+      <h2 class="section-heading">Write A Review</h2>
+      <div class="product-panel" style="padding: 24px;">
+        {% if error_message %}
+          <p>{{ error_message }}</p>
+        {% endif %}
+
+        <form action="{% url 'shop:add_review' product.id %}" method="post">
+          {% csrf_token %}
+          <div>
+            <label for="{{ review_form.rating.id_for_label }}">Rating</label>
+            {{ review_form.rating }}
+            {% if review_form.rating.errors %}
+              <p>{{ review_form.rating.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+          <div>
+            <label for="{{ review_form.comment.id_for_label }}">Comment</label>
+            {{ review_form.comment }}
+            {% if review_form.comment.errors %}
+              <p>{{ review_form.comment.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+          <button type="submit" class="primary-button">Submit Review</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

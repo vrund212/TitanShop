@@ -1,0 +1,373 @@
+<style>
+  .assistant-launcher{
+    position:fixed;
+    right:22px;
+    bottom:22px;
+    z-index:1050;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:none;
+    border-radius:999px;
+    padding:14px 18px;
+    background:linear-gradient(135deg, #d79864, #e7ad7b);
+    color:#fff;
+    font-weight:700;
+    box-shadow:0 18px 40px rgba(130, 74, 28, .28);
+  }
+  .assistant-panel{
+    position:fixed;
+    right:22px;
+    bottom:82px;
+    width:min(360px, calc(100vw - 28px));
+    max-height:70vh;
+    display:none;
+    z-index:1051;
+    border-radius:22px;
+    overflow:hidden;
+    background:rgba(255, 248, 241, .96);
+    border:1px solid rgba(191, 133, 79, .22);
+    box-shadow:0 30px 80px rgba(71, 45, 20, .28);
+  }
+  .assistant-panel.is-open{
+    display:flex;
+    flex-direction:column;
+  }
+  .assistant-badge{
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    object-fit:cover;
+    background:rgba(255,255,255,.18);
+    padding:2px;
+  }
+  .assistant-header{
+    padding:16px 18px 12px;
+    background:linear-gradient(135deg, #d79864, #ebb98d);
+    color:#fff;
+    position:relative;
+  }
+  .assistant-header-top{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding-right:24px;
+  }
+  .assistant-header-top img{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    object-fit:cover;
+    background:rgba(255,255,255,.18);
+    padding:2px;
+  }
+  .assistant-header h3{
+    margin:0;
+    color:#fff;
+    font-size:18px;
+    text-shadow:none;
+  }
+  .assistant-header p{
+    margin:6px 0 0;
+    color:rgba(255,255,255,.9);
+    font-size:13px;
+  }
+  .assistant-body{
+    padding:14px;
+    overflow-y:auto;
+    color:#433224;
+    background:linear-gradient(180deg, rgba(255,251,247,.98), rgba(255,244,233,.96));
+  }
+  .assistant-message{
+    margin-bottom:14px;
+  }
+  .assistant-bubble{
+    border-radius:18px;
+    padding:11px 13px;
+    font-size:14px;
+    line-height:1.5;
+  }
+  .assistant-bubble.bot{
+    background:#fff;
+    color:#5a4331;
+    border:1px solid rgba(210, 170, 133, .32);
+  }
+  .assistant-bubble.user{
+    background:#d79864;
+    color:#fff;
+    margin-left:auto;
+  }
+  .assistant-products{
+    display:grid;
+    gap:10px;
+    margin-top:10px;
+  }
+  .assistant-product{
+    display:grid;
+    grid-template-columns:64px 1fr;
+    gap:10px;
+    text-decoration:none;
+    background:#fff;
+    border:1px solid rgba(210, 170, 133, .35);
+    border-radius:16px;
+    padding:10px;
+    color:#433224 !important;
+  }
+  .assistant-product:hover{
+    text-decoration:none;
+    transform:translateY(-1px);
+    box-shadow:0 12px 28px rgba(126, 84, 47, .12);
+  }
+  .assistant-product img,
+  .assistant-product .assistant-product-fallback{
+    width:64px;
+    height:64px;
+    border-radius:12px;
+    object-fit:cover;
+    background:#f1e2d4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#9a6f4a;
+    font-weight:700;
+  }
+  .assistant-product h4{
+    margin:0 0 4px;
+    color:#4a3524;
+    font-size:14px;
+    line-height:1.35;
+  }
+  .assistant-product p{
+    margin:0;
+    color:#7c5f48;
+    font-size:12px;
+  }
+  .assistant-product strong{
+    display:block;
+    margin-top:6px;
+    color:#b56a2e;
+    font-size:14px;
+  }
+  .assistant-prompts{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+  .assistant-prompts button{
+    border:none;
+    border-radius:999px;
+    padding:7px 11px;
+    background:rgba(215, 152, 100, .14);
+    color:#8b5831;
+    font-size:12px;
+    font-weight:700;
+  }
+  .assistant-footer{
+    padding:12px;
+    background:#fff8f1;
+    border-top:1px solid rgba(210, 170, 133, .28);
+  }
+  .assistant-form{
+    display:flex;
+    gap:8px;
+  }
+  .assistant-input{
+    flex:1;
+    border:1px solid rgba(191, 133, 79, .28);
+    border-radius:999px;
+    padding:10px 14px;
+    color:#433224;
+    background:#fff;
+  }
+  .assistant-submit{
+    border:none;
+    border-radius:999px;
+    padding:10px 15px;
+    background:#d79864;
+    color:#fff;
+    font-weight:700;
+  }
+  .assistant-close{
+    position:absolute;
+    top:10px;
+    right:12px;
+    background:transparent;
+    border:none;
+    color:#fff;
+    font-size:20px;
+    line-height:1;
+  }
+  @media (max-width: 575px){
+    .assistant-panel{
+      right:10px;
+      left:10px;
+      width:auto;
+      bottom:76px;
+    }
+    .assistant-launcher{
+      right:10px;
+      bottom:12px;
+    }
+  }
+</style>
+
+<button type="button" class="assistant-launcher" id="assistant-launcher">
+  <img class="assistant-badge" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/ai-assistant-icon-svg-download-png-12210153.png" alt="AI assistant logo">
+  <span>AI Shopping Assistant</span>
+</button>
+
+<section class="assistant-panel" id="assistant-panel" data-endpoint="{% url 'shop:assistant' %}">
+  <div class="assistant-header">
+    <button type="button" class="assistant-close" id="assistant-close" aria-label="Close assistant">&times;</button>
+    <div class="assistant-header-top">
+      <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/ai-assistant-icon-svg-download-png-12210153.png" alt="AI assistant logo">
+      <h3>AI Shopping Assistant</h3>
+    </div>
+    <p>Ask for budget picks, best-reviewed items, new arrivals, or a category.</p>
+  </div>
+  <div class="assistant-body" id="assistant-body">
+    <div class="assistant-message">
+      <div class="assistant-bubble bot">
+        I can help you find products inside Titan Shop. Try “best reviewed items” or “electronics under $100”.
+      </div>
+      <div class="assistant-prompts" id="assistant-prompts">
+        <button type="button" data-prompt="Show best reviewed items">Best reviewed</button>
+        <button type="button" data-prompt="Find budget products under $100">Budget picks</button>
+        <button type="button" data-prompt="Show electronics">Electronics</button>
+        <button type="button" data-prompt="Show the newest arrivals">Newest</button>
+      </div>
+    </div>
+  </div>
+  <div class="assistant-footer">
+    <form class="assistant-form" id="assistant-form">
+      <input class="assistant-input" id="assistant-input" type="text" placeholder="Ask about products..." autocomplete="off">
+      <button class="assistant-submit" type="submit">Send</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  (function(){
+    var launcher = document.getElementById('assistant-launcher');
+    var panel = document.getElementById('assistant-panel');
+    var closeButton = document.getElementById('assistant-close');
+    var body = document.getElementById('assistant-body');
+    var form = document.getElementById('assistant-form');
+    var input = document.getElementById('assistant-input');
+    var prompts = document.getElementById('assistant-prompts');
+
+    if (!launcher || !panel || !body || !form || !input) {
+      return;
+    }
+
+    function escapeHtml(text) {
+      return String(text || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function addMessage(text, role) {
+      var wrap = document.createElement('div');
+      wrap.className = 'assistant-message';
+      wrap.innerHTML = '<div class="assistant-bubble ' + role + '">' + escapeHtml(text) + '</div>';
+      body.appendChild(wrap);
+      body.scrollTop = body.scrollHeight;
+      return wrap;
+    }
+
+    function addProducts(products) {
+      if (!products || !products.length) {
+        return;
+      }
+      var wrap = document.createElement('div');
+      wrap.className = 'assistant-products';
+      wrap.innerHTML = products.map(function(product) {
+        var media = product.image
+          ? '<img src="' + encodeURI(product.image) + '" alt="' + escapeHtml(product.name) + '">'
+          : '<div class="assistant-product-fallback">TS</div>';
+        return '' +
+          '<a class="assistant-product" href="' + escapeHtml(product.url) + '">' +
+            media +
+            '<div>' +
+              '<h4>' + escapeHtml(product.name) + '</h4>' +
+              '<p>' + escapeHtml(product.category || '') + (product.subcategory ? ' • ' + escapeHtml(product.subcategory) : '') + '</p>' +
+              '<p>Rating ' + escapeHtml(product.rating) + ' • ' + escapeHtml(product.reviews) + ' reviews</p>' +
+              '<strong>' + escapeHtml(product.price_label) + '</strong>' +
+            '</div>' +
+          '</a>';
+      }).join('');
+      body.appendChild(wrap);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function setOpenState(open) {
+      panel.classList.toggle('is-open', open);
+      if (open) {
+        input.focus();
+      }
+    }
+
+    function askAssistant(question) {
+      if (!question) {
+        return;
+      }
+      addMessage(question, 'user');
+      addMessage('Looking through Titan Shop for you...', 'bot');
+
+      fetch(panel.getAttribute('data-endpoint') + '?q=' + encodeURIComponent(question), {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+        .then(function(response){ return response.json(); })
+        .then(function(data){
+          var bubbles = body.querySelectorAll('.assistant-bubble.bot');
+          var loadingBubble = bubbles[bubbles.length - 1];
+          if (loadingBubble && loadingBubble.textContent === 'Looking through Titan Shop for you...') {
+            loadingBubble.textContent = data.message || 'Here is what I found.';
+          } else {
+            addMessage(data.message || 'Here is what I found.', 'bot');
+          }
+          addProducts(data.products || []);
+        })
+        .catch(function(){
+          var bubbles = body.querySelectorAll('.assistant-bubble.bot');
+          var loadingBubble = bubbles[bubbles.length - 1];
+          if (loadingBubble && loadingBubble.textContent === 'Looking through Titan Shop for you...') {
+            loadingBubble.textContent = 'The assistant could not load right now. Please try again in a moment.';
+          } else {
+            addMessage('The assistant could not load right now. Please try again in a moment.', 'bot');
+          }
+        });
+    }
+
+    launcher.addEventListener('click', function(){
+      setOpenState(!panel.classList.contains('is-open'));
+    });
+
+    if (closeButton) {
+      closeButton.addEventListener('click', function(){
+        setOpenState(false);
+      });
+    }
+
+    form.addEventListener('submit', function(event){
+      event.preventDefault();
+      var question = input.value.trim();
+      input.value = '';
+      askAssistant(question);
+    });
+
+    if (prompts) {
+      prompts.addEventListener('click', function(event){
+        var button = event.target.closest('button[data-prompt]');
+        if (!button) {
+          return;
+        }
+        askAssistant(button.getAttribute('data-prompt'));
+      });
+    }
+  })();
+</script>

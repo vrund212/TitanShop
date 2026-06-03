@@ -1,0 +1,290 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block body %}
+<style>
+  .recommend-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 46px 20px 64px;
+  }
+
+  .recommend-hero {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 28px;
+    padding: 26px;
+    border-radius: 26px;
+    background: linear-gradient(135deg, rgba(20, 43, 32, 0.92), rgba(37, 84, 61, 0.92));
+    box-shadow: 0 22px 50px rgba(0, 0, 0, 0.22);
+  }
+
+  .recommend-hero h1 {
+    margin: 0 0 8px;
+    color: #fff;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+  }
+
+  .recommend-hero p {
+    margin: 0;
+    color: #d7e8dc;
+    max-width: 760px;
+    line-height: 1.7;
+  }
+
+  .recommend-badge {
+    align-self: start;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #f4fff7;
+    font-weight: 700;
+  }
+
+  .recommend-section {
+    margin-top: 34px;
+  }
+
+  .recommend-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .recommend-section-head h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.5rem;
+  }
+
+  .recommend-section-head p {
+    margin: 0;
+    color: #d7e8dc;
+  }
+
+  .recommend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 22px;
+  }
+
+  .recommend-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(24, 50, 36, 0.08);
+    box-shadow: 0 18px 40px rgba(17, 27, 22, 0.12);
+  }
+
+  .recommend-thumb {
+    height: 240px;
+    background: linear-gradient(135deg, #e7efe8, #d5e1d7);
+  }
+
+  .recommend-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .recommend-copy {
+    padding: 18px;
+    color: #213328;
+  }
+
+  .recommend-copy h3 {
+    margin: 0 0 10px;
+    color: #173323;
+    font-size: 1.1rem;
+  }
+
+  .recommend-copy p {
+    color: #4c6457;
+    line-height: 1.65;
+    min-height: 52px;
+  }
+
+  .recommend-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0 16px;
+  }
+
+  .recommend-stats span {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #edf4ee;
+    color: #31513d;
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  .recommend-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .recommend-price {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #173323;
+  }
+
+  .recommend-link {
+    display: inline-block;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: #1f4a34;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .recommend-empty {
+    padding: 24px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #345242;
+  }
+</style>
+
+<section class="recommend-shell">
+  <div class="recommend-hero">
+    <div>
+      <h1>Recommendations For {{ username }}</h1>
+      <p>{{ recommendation_message }}</p>
+    </div>
+    <div class="recommend-badge">{{ recommended_products|length }} for you | {{ reviewed_products|length }} reviewed</div>
+  </div>
+
+  <div class="recommend-section">
+    <div class="recommend-section-head">
+      <div>
+        <h2>Recommended For You</h2>
+        <p>Generated from your higher-rated products, favorite categories, and similar price ranges.</p>
+      </div>
+    </div>
+    {% if recommended_products %}
+      <div class="recommend-grid">
+        {% for product in recommended_products %}
+          <article class="recommend-card">
+            <a href="{% url 'shop:product_detail' product.id %}">
+              <div class="recommend-thumb">
+                {% if product.display_image_url %}
+                  <img src="{{ product.display_image_url }}" alt="{{ product.name }}">
+                {% else %}
+                  <img src="{% static 'shop/images/avatar.svg' %}" alt="{{ product.name }}">
+                {% endif %}
+              </div>
+            </a>
+            <div class="recommend-copy">
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.description|default:"A personalized pick based on your review history."|truncatechars:115 }}</p>
+              <div class="recommend-stats">
+                <span>{{ product.category.name }}</span>
+                <span>{{ product.review_set.count }} review{{ product.review_set.count|pluralize }}</span>
+                <span>{{ product.average_rating|floatformat:1 }}/5</span>
+              </div>
+              <div class="recommend-actions">
+                <div class="recommend-price">Rs. {{ product.discount_price|default:product.price }}</div>
+                <a class="recommend-link" href="{% url 'shop:product_detail' product.id %}">View Product</a>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="recommend-empty">No personalized matches yet. Add a few more reviews and Titan Shop will learn your taste.</div>
+    {% endif %}
+  </div>
+
+  <div class="recommend-section">
+    <div class="recommend-section-head">
+      <div>
+        <h2>Products You Reviewed</h2>
+        <p>Your own rated items, shown first.</p>
+      </div>
+    </div>
+    {% if reviewed_products %}
+      <div class="recommend-grid">
+        {% for product in reviewed_products %}
+          <article class="recommend-card">
+            <a href="{% url 'shop:product_detail' product.id %}">
+              <div class="recommend-thumb">
+                {% if product.display_image_url %}
+                  <img src="{{ product.display_image_url }}" alt="{{ product.name }}">
+                {% else %}
+                  <img src="{% static 'shop/images/avatar.svg' %}" alt="{{ product.name }}">
+                {% endif %}
+              </div>
+            </a>
+            <div class="recommend-copy">
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.description|default:"You reviewed this item."|truncatechars:115 }}</p>
+              <div class="recommend-stats">
+                <span>{{ product.category.name }}</span>
+                <span>{{ product.review_set.count }} review{{ product.review_set.count|pluralize }}</span>
+                <span>{{ product.average_rating|floatformat:1 }}/5</span>
+              </div>
+              <div class="recommend-actions">
+                <div class="recommend-price">Rs. {{ product.discount_price|default:product.price }}</div>
+                <a class="recommend-link" href="{% url 'shop:product_detail' product.id %}">View Product</a>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="recommend-empty">You have not reviewed any products yet.</div>
+    {% endif %}
+  </div>
+
+  <div class="recommend-section">
+    <div class="recommend-section-head">
+      <div>
+        <h2>Best Reviewed Items</h2>
+        <p>Top products based on rating and review count.</p>
+      </div>
+    </div>
+    {% if best_reviewed_products %}
+      <div class="recommend-grid">
+        {% for product in best_reviewed_products %}
+          <article class="recommend-card">
+            <a href="{% url 'shop:product_detail' product.id %}">
+              <div class="recommend-thumb">
+                {% if product.display_image_url %}
+                  <img src="{{ product.display_image_url }}" alt="{{ product.name }}">
+                {% else %}
+                  <img src="{% static 'shop/images/avatar.svg' %}" alt="{{ product.name }}">
+                {% endif %}
+              </div>
+            </a>
+            <div class="recommend-copy">
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.description|default:"One of the best reviewed items in the shop."|truncatechars:115 }}</p>
+              <div class="recommend-stats">
+                <span>{{ product.category.name }}</span>
+                <span>{{ product.review_set.count }} review{{ product.review_set.count|pluralize }}</span>
+                <span>{{ product.average_rating|floatformat:1 }}/5</span>
+              </div>
+              <div class="recommend-actions">
+                <div class="recommend-price">Rs. {{ product.discount_price|default:product.price }}</div>
+                <a class="recommend-link" href="{% url 'shop:product_detail' product.id %}">View Product</a>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="recommend-empty">No best-reviewed items are available yet.</div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

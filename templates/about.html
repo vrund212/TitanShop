@@ -1,0 +1,346 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block body %}
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .contact-shell {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 42px 20px 64px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
+    overflow-x: hidden;
+  }
+
+  .contact-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    padding: 32px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #2C3E50, #34495E);
+    box-shadow: 0 8px 24px rgba(44, 62, 80, 0.2);
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .contact-hero h1 {
+    margin: 0 0 10px;
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+  }
+
+  .contact-hero p {
+    margin: 0;
+    color: #ECF0F1;
+    max-width: 760px;
+  }
+
+  .contact-badge {
+    padding: 10px 14px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #FF8C42, #E67E22);
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  .contact-panel {
+    background: #ffffff;
+    border-radius: 16px;
+    border: none;
+    overflow-x: hidden;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .contact-panel:hover {
+    box-shadow: 0 12px 28px rgba(255, 140, 66, 0.15);
+  }
+
+  .contact-panel h2 {
+    margin: 0 0 16px;
+    color: #2C3E50;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .contact-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .contact-item {
+    padding: 16px;
+    border-radius: 12px;
+    background: #ECF0F1;
+    border-left: 4px solid #FF8C42;
+  }
+
+  .contact-item strong {
+    display: block;
+    color: #2C3E50;
+    margin-bottom: 4px;
+  }
+
+  .contact-item span,
+  .contact-item a,
+  .contact-copy,
+  .contact-help li,
+  .contact-hours li {
+    color: #7f8c8d;
+  }
+
+  .contact-item a {
+    text-decoration: none;
+    font-weight: 700;
+    color: #FF8C42 !important;
+    transition: all 0.3s ease;
+  }
+
+  .contact-item a:hover {
+    color: #E67E22 !important;
+    text-decoration: underline;
+  }
+
+  .contact-form {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .contact-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .contact-row > div {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .contact-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2C3E50;
+    font-weight: 700;
+  }
+
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form select {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    border: 2px solid #ECF0F1;
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: #fff;
+    color: #2C3E50;
+    transition: all 0.3s ease;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus,
+  .contact-form select:focus {
+    border-color: #FF8C42;
+    box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+    outline: none;
+  }
+
+  .contact-form textarea {
+    min-height: 160px;
+    resize: vertical;
+  }
+
+  .contact-button {
+    display: inline-block;
+    border: 0;
+    border-radius: 12px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #FF8C42, #E67E22);
+    color: #fff;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(255, 140, 66, 0.2);
+  }
+
+  .contact-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 140, 66, 0.35);
+  }
+
+  .contact-note {
+    margin-top: 12px;
+    color: #95A5A6;
+    font-size: 0.94rem;
+  }
+
+  .contact-help,
+  .contact-hours {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .contact-map {
+    margin-top: 18px;
+    padding: 18px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #edf4ee, #dbe8de);
+    color: #264634;
+  }
+
+  @media (max-width: 900px) {
+    .contact-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (min-width: 901px) {
+    .contact-grid {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    }
+    .contact-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
+
+<section class="contact-shell">
+  <div class="contact-hero">
+    <div>
+      <h1>Contact Us</h1>
+      <p>Reach Titan Shop for order support, account questions, listings, and campus pickup help in Fullerton, California.</p>
+    </div>
+    <div class="contact-badge">Fullerton, CA</div>
+  </div>
+
+  <div class="contact-grid">
+    <div>
+      <div class="contact-panel" style="margin-bottom: 22px;">
+        <h2>Get In Touch</h2>
+        <div class="contact-list">
+          <div class="contact-item">
+            <strong>Email Support</strong>
+            <a href="mailto:vrund.thakkar@titanshop.com">vrund.thakkar@titanshop.com</a>
+          </div>
+          <div class="contact-item">
+            <strong>Phone</strong>
+            <span>(657) 555-0142</span>
+          </div>
+          <div class="contact-item">
+            <strong>Pickup & Support Desk</strong>
+            <span>800 N State College Blvd, Fullerton, CA 92831</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-panel" style="margin-bottom: 22px;">
+        <h2>Support Topics</h2>
+        <ul class="contact-help">
+          <li>Order status and delivery updates</li>
+          <li>Cart and checkout issues</li>
+          <li>Product listing corrections</li>
+          <li>Review, recommendation, and account support</li>
+        </ul>
+      </div>
+
+      <div class="contact-panel">
+        <h2>Hours</h2>
+        <ul class="contact-hours">
+          <li>Monday to Friday: 9:00 AM - 6:00 PM</li>
+          <li>Saturday: 10:00 AM - 3:00 PM</li>
+          <li>Sunday: Closed</li>
+        </ul>
+        <div class="contact-map">
+          <strong>Campus Service Area</strong><br>
+          Titan Shop support is centered around Fullerton, CA for local pickup coordination and student marketplace help.
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-panel">
+      <h2>Send A Message</h2>
+      <p class="contact-copy">This contact form UI is ready for customer messages and support requests. If you want, I can wire it to save submissions or send email next.</p>
+
+      <form class="contact-form" method="post" action="#">
+        {% csrf_token %}
+        <div class="contact-row">
+          <div>
+            <label for="contact_name">Full Name</label>
+            <input id="contact_name" type="text" value="{% if request.user.is_authenticated %}{{ request.user.get_full_name|default:request.user.username }}{% endif %}" placeholder="Your full name">
+          </div>
+          <div>
+            <label for="contact_email">Email Address</label>
+            <input id="contact_email" type="email" value="{% if request.user.is_authenticated %}{{ request.user.email }}{% endif %}" placeholder="name@example.com">
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div>
+            <label for="contact_topic">Topic</label>
+            <select id="contact_topic">
+              <option>Order Support</option>
+              <option>Account Help</option>
+              <option>Product Listing Issue</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div>
+            <label for="contact_phone">Phone</label>
+            <input id="contact_phone" type="text" placeholder="Optional phone number">
+          </div>
+        </div>
+
+        <div>
+          <label for="contact_message">Message</label>
+          <textarea id="contact_message" placeholder="Tell us how we can help with your order, account, or listing."></textarea>
+        </div>
+
+        <div>
+          <button type="button" class="contact-button">Send Message</button>
+          <div class="contact-note">This button is currently styled for UI only. I can connect it to a working submission flow if you want.</div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

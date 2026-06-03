@@ -1,0 +1,186 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Track My Orders{% endblock %}
+
+{% block body %}
+<style>
+  .orders-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 42px 20px 64px;
+  }
+
+  .orders-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    padding: 28px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgba(20, 43, 32, 0.94), rgba(37, 84, 61, 0.94));
+    box-shadow: 0 22px 52px rgba(0, 0, 0, 0.24);
+  }
+
+  .orders-hero h1 {
+    margin: 0 0 10px;
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .orders-hero p {
+    margin: 0;
+    color: #d7e8dc;
+    max-width: 760px;
+  }
+
+  .orders-badge {
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .orders-grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  .order-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    border: 1px solid rgba(24, 50, 36, 0.08);
+    padding: 22px;
+    box-shadow: 0 18px 38px rgba(17, 27, 22, 0.12);
+  }
+
+  .order-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .order-top h2 {
+    margin: 0 0 6px;
+    color: #173323;
+    font-size: 1.2rem;
+  }
+
+  .order-top p,
+  .order-meta div {
+    color: #4d6357;
+  }
+
+  .order-status {
+    align-self: start;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #edf4ee;
+    color: #244734;
+    font-weight: 800;
+  }
+
+  .order-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .order-meta strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #173323;
+  }
+
+  .order-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .order-total {
+    color: #173323;
+    font-size: 1.15rem;
+    font-weight: 900;
+  }
+
+  .order-link {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: #1f4a34;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .orders-empty {
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 24px;
+    padding: 28px;
+    color: #375646;
+  }
+</style>
+
+<section class="orders-shell">
+  <div class="orders-hero">
+    <div>
+      <h1>Track My Orders</h1>
+      <p>Review each order, check its current status, and open the full order details page for delivery and item information.</p>
+    </div>
+    <div class="orders-badge">{{ order_summaries|length }} order{{ order_summaries|length|pluralize }}</div>
+  </div>
+
+  {% if order_summaries %}
+    <div class="orders-grid">
+      {% for entry in order_summaries %}
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2>Order #{{ entry.order.id }}</h2>
+              <p>Placed on {{ entry.order.create_at|date:"M d, Y" }} for {{ entry.order.name }} {{ entry.order.surname }}</p>
+            </div>
+            <div class="order-status">{{ entry.order.status }}</div>
+          </div>
+
+          <div class="order-meta">
+            <div>
+              <strong>Phone</strong>
+              <span>{{ entry.order.phone }}</span>
+            </div>
+            <div>
+              <strong>City</strong>
+              <span>{{ entry.order.city }}</span>
+            </div>
+            <div>
+              <strong>Items</strong>
+              <span>{{ entry.item_count }}</span>
+            </div>
+            <div>
+              <strong>Last Update</strong>
+              <span>{{ entry.order.update_at|date:"M d, Y" }}</span>
+            </div>
+          </div>
+
+          <div class="order-actions">
+            <div class="order-total">Rs. {{ entry.order.total }}</div>
+            <a class="order-link" href="/order/detail/{{ entry.order.id }}">View Order Details</a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="orders-empty">
+      You do not have any orders yet. Add items to your cart and complete checkout to start tracking them here.
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

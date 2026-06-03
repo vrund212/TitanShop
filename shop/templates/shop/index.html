@@ -1,0 +1,283 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}TitanShop - Home{% endblock %}
+
+{% block css %}
+  <style>
+    .button2 {
+      display: inline-block;
+      padding: .75rem 1.3rem;
+      border-radius: 999px;
+      background: var(--brand);
+      color: #fff !important;
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: .2px;
+      box-shadow: 0 16px 30px rgba(79, 70, 229, .35);
+    }
+
+    #slider-text h2 {
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: .5px;
+      border-left: 5px solid var(--brand);
+      padding-left: 10px;
+    }
+
+    #fashion-sale .product-block {
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .09);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, .35);
+      transition: transform .14s ease, box-shadow .2s ease;
+    }
+    #fashion-sale .product-block:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, .45);
+    }
+    #fashion-sale .product-block .image {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #fashion-sale .product-block .image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .product-grid2 {
+      background: rgba(255, 255, 255, .05);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .1);
+      box-shadow: 0 20px 50px rgba(2, 6, 23, .45);
+      margin: 16px 0;
+      transition: transform .12s ease, box-shadow .2s ease;
+    }
+    .product-grid2:hover { transform: translateY(-4px); box-shadow: 0 26px 60px rgba(2, 6, 23, .55); }
+    .product-grid2 .product-image2 { position: relative; background: #0b1220; }
+    .product-grid2 .product-image2 .pic-1,
+    .product-grid2 .product-image2 .pic-2 {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+    }
+    .product-grid2 .social li a {
+      background: rgba(15, 23, 42, .7);
+      border: 1px solid rgba(255, 255, 255, .15);
+      color: #fff;
+    }
+    .product-grid2 .add-to-cart {
+      background: var(--brand);
+      color: #fff;
+      font-weight: 800;
+      border-radius: 0 0 16px 16px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .product-grid2 .title a { color: #fff; text-decoration: none; }
+    .product-grid2 .price { color: #c7d2fe; font-weight: 900; }
+
+    .pagination .page-link {
+      background: rgba(255, 255, 255, .06);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      margin: 0 4px;
+    }
+    .pagination .page-item.active .page-link {
+      background: var(--brand);
+      box-shadow: 0 8px 20px rgba(79, 70, 229, .35);
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+    </ol>
+
+    <div class="carousel-inner">
+      <!-- Example static first item (kept) -->
+      <div class="carousel-item item1 active">
+        <div class="container-fluid">
+          <div class="w3l-space-banner">
+            <div class="carousel-caption p-lg-5 p-sm-4 p-3">
+              <p>Get flat <span>10%</span> Cashback</p>
+              <h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">The <span>Big</span> Sale</h3>
+              <a class="button2" href="{% url 'shop:list' %}">Shop Now </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% for slid in slider %}
+        {% if slid.image %}
+          <div class="carousel-item item4" style="background-image: url('{{ slid.image.url }}')">
+        {% else %}
+          <!-- Fallback background if no slider image -->
+          <div class="carousel-item item4" style="background:#111827;">
+        {% endif %}
+            <div class="container-fluid">
+              <div class="w3l-space-banner">
+                <div class="carousel-caption p-lg-5 p-sm-4 p-3">
+                  <p>{{slid.name}} <span>40%</span> Discount</p>
+                  <h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">Today <span>{{slid.description}}</span></h3>
+                  <a class="button2" href="{% url 'shop:list' %}">Shop Now </a>
+                </div>
+              </div>
+            </div>
+          </div>
+      {% endfor %}
+    </div>
+
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+  <!-- //banner -->
+
+  <div class="container-fluid">
+    <div class="row" id="slider-text">
+      <div class="col-md-6">
+        <h2>ALL CATEGORIES</h2>
+      </div>
+    </div>
+  </div>
+
+  <div id="fashion-sale">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 fashion">
+          <div class="box">
+            <div id="fashion-product" class="owl-carousel fashion-product">
+              {% for c in categories %}
+              <div class="item">
+                <div class="product-block ">
+                  {% if category.slug == c.slug %}{% endif %}
+                  <a href ="{{ c.get_absolute_url }}">
+                    <div class="image">
+                      {% if c.display_image_url %}
+                        <img class="img-responsive" title="{{c.name}}" alt="{{c.name}}" src="{{ c.display_image_url }}"
+                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=No+Image';">
+                      {% else %}
+                        <img class="img-responsive" title="{{c.name}}" alt="{{c.name}}"
+                             src="{% static 'shop/images/placeholder-category-wide.png' %}"
+                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=No+Image';">
+                      {% endif %}
+                    </div>
+                  </a>
+                  <div class="product-details">
+                    <div class="product-name">
+                      <h3><a href ="{{ c.get_absolute_url }}">{{c.name}}</a></h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row" id="slider-text">
+      <div class="col-md-6">
+        <h2><b>ALL PRODUCTS</b></h2>
+      </div>
+    </div>
+  </div>
+
+  {% if product_list %}
+  <div class="container-fluid">
+    <div class="row">
+      {% for product in product_list %}
+      <div class="col-md-3 col-sm-6">
+        <div class="product-grid2">
+          <div class="product-image2">
+            <a href="{% url 'shop:product_detail' product.id %}">
+              {% if product.display_image_url %}
+                <img class="pic-1" height="230" src="{{ product.display_image_url }}"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=No+Image';">
+                <img class="pic-2" src="{{ product.display_image_url }}"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=No+Image';">
+              {% else %}
+                <img class="pic-1" height="230" src="{% static 'shop/images/placeholder-product.png' %}"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=No+Image';">
+                <img class="pic-2" src="{% static 'shop/images/placeholder-product.png' %}"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=No+Image';">
+              {% endif %}
+            </a>
+            <ul class="social">
+              <li><a href="#" data-tip="Quick View"><i class="fa fa-eye"></i></a></li>
+              <li><a href="#" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+              <li><a href="#" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+            </ul>
+            <a class="add-to-cart" href="{% url 'shop:product_detail' product.id %}">View product</a>
+          </div>
+          <div class="product-content">
+            <h3 class="title"><a href="{% url 'shop:product_detail' product.id %}">{{ product.name }}</a></h3>
+            <h3 class="title">{{ product.review_set.count }} reviews</h3>
+            <h3 class="title">{{ product.average_rating | floatformat }} average rating</h3>
+            <span class="price">{{product.price}}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+    <div class="container-fluid"><p>No products are available.</p></div>
+  {% endif %}
+
+  <div class="row" style="center">
+    <div class="col-md-10">
+      {% if products.has_other_pages %}
+      <ul class="pagination">
+        {% if products.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}">&laquo;</a></li>
+        {% else %}
+          <li class="page-item disabled"><a class="page-link">&laquo;</a></li>
+        {% endif %}
+
+        {% for i in products.paginator.page_range %}
+          {% if products.number == i %}
+            <li class="page-item active"><a class="page-link">{{i}}</a></li>
+          {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if products.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}">&raquo;</a></li>
+        {% else %}
+          <li class="page-item disabled"><a class="page-link">&raquo;</a></li>
+        {% endif %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+
+{% endblock %}
+

@@ -1,0 +1,247 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+
+  <link href="{% static 'shop/css/login.css' %}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Blue-Orange coherent theme -->
+  <style>
+    :root{
+      --brand:#FF8C42;       /* primary orange */
+      --brand-hover:#E67E22; /* dark orange */
+      --accent:#3498DB;      /* light blue */
+      --ink:#2C3E50;         /* primary blue text */
+      --muted:#7f8c8d;       /* muted gray */
+      --ring:#ECF0F1;        /* light gray border */
+    }
+
+    body{
+      font-family:"Poppins", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      color:var(--ink);
+      margin:0;
+      min-height:100vh;
+      background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background-attachment:fixed;
+    }
+
+    .wave{
+      position:absolute;
+      left:0; bottom:0;
+      width:100%;
+      opacity:.3;
+      mix-blend-mode:multiply;
+      z-index:-1;
+    }
+
+    .container{
+      max-width:980px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      padding:30px;
+    }
+
+    .login-content{
+      background:rgba(255,255,255,0.95);
+      border:2px solid var(--ring);
+      border-radius:16px;
+      box-shadow: 0 12px 40px rgba(44, 62, 80, 0.2);
+      padding:40px 36px;
+      width:100%;
+      max-width:400px;
+      text-align:center;
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      transition:all .3s ease;
+    }
+    .login-content:hover{
+      transform:translateY(-4px);
+      box-shadow: 0 20px 50px rgba(255, 140, 66, 0.15);
+      border-color:var(--brand);
+    }
+
+    .login-content img[alt="avatar"]{
+      width:100px;
+      margin-bottom:10px;
+      filter:drop-shadow(0 4px 12px rgba(255, 140, 66, 0.2));
+    }
+
+    .title{
+      color:var(--ink);
+      font-weight:900;
+      font-size:1.8rem;
+      letter-spacing:.2px;
+      margin-bottom:18px;
+    }
+
+    /* Input design */
+    .input-div{
+      border-radius:12px;
+      border:2px solid var(--ring);
+      background:rgba(255,255,255,0.9);
+      display:flex;
+      align-items:center;
+      margin:16px 0;
+      padding:8px 14px;
+      transition:all .3s ease;
+    }
+    .input-div:focus-within{
+      border-color:var(--brand);
+      background:#ffffff;
+      box-shadow:0 0 0 3px rgba(255, 140, 66, 0.15);
+    }
+    .input-div .i{color:var(--brand);}
+    .input{
+      flex:1; border:none; outline:none; background:transparent;
+      color:var(--ink); padding:8px; font-size:1rem;
+    }
+    .input::placeholder{color:#95A5A6;}
+
+    /* Button */
+    .btn{
+      background:linear-gradient(135deg, var(--brand), var(--brand-hover));
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      padding:12px;
+      width:100%;
+      font-weight:700;
+      font-size:1rem;
+      box-shadow: 0 6px 16px rgba(255, 140, 66, 0.2);
+      transition:all .3s ease;
+      cursor:pointer;
+    }
+    .btn:hover{
+      transform:translateY(-2px);
+      box-shadow: 0 10px 24px rgba(255, 140, 66, 0.35);
+    }
+
+    /* Links */
+    .auth-links{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:10px 0 6px;
+      font-size:.95rem;
+    }
+    .auth-links a{
+      color:var(--brand);
+      text-decoration:none;
+      font-weight:700;
+    }
+    .auth-links a:hover{
+      color:var(--brand-hover);
+      text-decoration:underline;
+    }
+    .remember{
+      display:flex;
+      align-items:center;
+      gap:.5rem;
+      color:var(--muted);
+    }
+    .remember input{accent-color:var(--brand);}
+
+    /* Error banner */
+    .error-banner{
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      padding:10px 12px;
+      margin:12px auto 16px;
+      max-width:400px;
+      color:#fff;
+      background:linear-gradient(135deg, #E67E22, #FF8C42);
+      border:1px solid rgba(255, 140, 66, 0.5);
+      border-radius:12px;
+      font-weight:700;
+      backdrop-filter:blur(4px);
+    }
+
+    /* Show/hide password */
+    .input-div.pass{position:relative;}
+    .toggle-pass{
+      position:absolute;
+      right:14px;
+      top:50%;
+      transform:translateY(-50%);
+      border:0;
+      background:transparent;
+      cursor:pointer;
+      padding:6px;
+      color:var(--brand);
+    }
+  </style>
+</head>
+
+<body>
+  {% if error %}
+  <div class="error-banner">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span>{{ error }}</span>
+  </div>
+  {% endif %}
+
+  <img class="wave" src="{% static 'shop/images/wave.png' %}" alt="">
+
+  <div class="container">
+    <div class="login-content">
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        <img src="{% static 'shop/images/avatar.svg' %}" alt="avatar">
+        <h2 class="title">Welcome Back</h2>
+
+        <div class="input-div one">
+          <div class="i"><i class="fas fa-user"></i></div>
+          <input type="text" name="username" class="input" placeholder="Username" required>
+        </div>
+
+        <div class="input-div pass">
+          <div class="i"><i class="fas fa-lock"></i></div>
+          <input id="password" type="password" name="password" class="input" placeholder="Password" required>
+          <button type="button" class="toggle-pass" aria-label="Show password"><i class="far fa-eye"></i></button>
+        </div>
+
+        <div class="auth-links">
+          <label class="remember"><input type="checkbox" name="remember"> Remember me</label>
+          <a href="/accounts/password-reset/">Forgot password?</a>
+        </div>
+
+        <div style="margin:6px 0 14px">
+          <a href="{% url 'shop:signup' %}">Want to sign up with email? <strong>Sign Up</strong></a>
+        </div>
+
+        <input type="submit" class="btn" value="Sign In">
+      </form>
+    </div>
+  </div>
+
+  <script src="{% static 'shop/js/main.js' %}"></script>
+  <script>
+    // Floating label / focus
+    document.querySelectorAll('.input').forEach(inp=>{
+      inp.addEventListener('focus',()=>inp.closest('.input-div').classList.add('focus'));
+      inp.addEventListener('blur',()=>{if(!inp.value)inp.closest('.input-div').classList.remove('focus');});
+    });
+
+    // Show/hide password
+    const toggle=document.querySelector('.toggle-pass'),pwd=document.getElementById('password');
+    if(toggle&&pwd){
+      toggle.addEventListener('click',()=>{
+        const show=pwd.type==='text';
+        pwd.type=show?'password':'text';
+        toggle.innerHTML=show?'<i class="far fa-eye"></i>':'<i class="far fa-eye-slash"></i>';
+      });
+    }
+  </script>
+</body>
+</html>

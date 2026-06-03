@@ -1,0 +1,23 @@
+{% extends 'shop/product_list.html' %}
+{% block body %}
+<div class="container" style="margin-top:40px;">
+    <h2>Related products for {{ product.name }}</h2>
+</div>
+<div class="row">
+    {% for a in content.itertuples %}
+    <div class="col-md-3">
+        <div style="margin-top:10px;" class='card blue-gradient mb-3'>
+            <div class="card-header blue-gradient">{{a.name}}</div>
+            <div class="card-body">
+                <p class="card-text ">{{a.description}}</p>
+                <a href="{% url 'shop:product_detail' a.id %}">Open product</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-md-12">
+        <p>No related products are available yet.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock body %}

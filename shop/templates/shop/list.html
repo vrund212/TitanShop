@@ -1,0 +1,210 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+  .catalog-wrap {
+    padding: 42px 0 56px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
+  }
+
+  .catalog-hero {
+    margin-bottom: 28px;
+    padding: 28px 30px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #2C3E50, #34495E);
+    border: none;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(44, 62, 80, 0.15);
+  }
+
+  .catalog-hero h1 {
+    margin: 0 0 8px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.8rem;
+  }
+
+  .catalog-hero p {
+    margin: 0;
+    color: #ecf0f1;
+  }
+
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+  }
+
+  .catalog-card {
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    background: #ffffff;
+    border: none;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1);
+    transition: all .3s ease;
+  }
+
+  .catalog-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 32px rgba(255, 140, 66, 0.15);
+    border-top: 4px solid #FF8C42;
+    text-decoration: none;
+  }
+
+  .catalog-media {
+    height: 240px;
+    background: linear-gradient(135deg, #2C3E50, #34495E);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .catalog-media::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,140,66,0.1) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .catalog-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .catalog-card:hover .catalog-media img {
+    transform: scale(1.08);
+  }
+
+  .catalog-body {
+    padding: 20px;
+    color: #2c3e50;
+  }
+
+  .catalog-title {
+    margin: 0 0 10px;
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1.3;
+  }
+
+  .catalog-desc {
+    min-height: 48px;
+    margin-bottom: 12px;
+    color: #7f8c8d;
+    font-size: .95rem;
+    line-height: 1.55;
+  }
+
+  .catalog-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .catalog-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #FF8C42, #E67E22);
+    color: #ffffff;
+    font-size: .82rem;
+    font-weight: 600;
+  }
+
+  .catalog-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid #ecf0f1;
+  }
+
+  .catalog-price {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #FF8C42;
+  }
+
+  .catalog-link {
+    color: #ffffff;
+    font-weight: 700;
+    background: linear-gradient(135deg, #FF8C42, #E67E22);
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .catalog-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 140, 66, 0.3);
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container catalog-wrap">
+  <div class="catalog-hero">
+    <h1>
+      {% if category %}
+        {{ category.name }}
+      {% elif subcategory %}
+        {{ subcategory.name }}
+      {% else %}
+        View Products
+      {% endif %}
+    </h1>
+    <p>
+      {% if products %}
+        {{ products|length }} product{{ products|length|pluralize }} available with images, prices, ratings, and direct product pages.
+      {% else %}
+        Browse the latest products listed in TitanShop.
+      {% endif %}
+    </p>
+  </div>
+
+  {% if products %}
+    <div class="catalog-grid">
+      {% for product in products %}
+        <a class="catalog-card" href="{% url 'shop:product_detail' product.id %}">
+          <div class="catalog-media">
+            {% if product.display_image_url %}
+              <img src="{{ product.display_image_url }}" alt="{{ product.name }}">
+            {% else %}
+              <img src="{% static 'shop/images/avatar.svg' %}" alt="{{ product.name }}">
+            {% endif %}
+          </div>
+          <div class="catalog-body">
+            <h3 class="catalog-title">{{ product.name }}</h3>
+            <div class="catalog-desc">{{ product.description|truncatechars:95 }}</div>
+            <div class="catalog-meta">
+              <span class="catalog-badge">{{ product.review_set.count }} review{{ product.review_set.count|pluralize }}</span>
+              <span class="catalog-badge">{{ product.average_rating|floatformat }} rating</span>
+              <span class="catalog-badge">{{ product.stock }} in stock</span>
+            </div>
+            <div class="catalog-footer">
+              <span class="catalog-price">Rs. {{ product.price }}</span>
+              <span class="catalog-link">View details</span>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="color:white;">No products are available in this section yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
