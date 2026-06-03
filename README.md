@@ -250,3 +250,64 @@ TitanShop/
 ├── requirements.txt               # Python dependencies
 ├── .gitignore                     # Ignored files and folders
 └── README.md                      # Project documentation
+
+## Screenshots
+
+### Admin Dashboard
+![Admin Dashboard](admin_dashboard.png)
+
+### AI Shopping Assistant
+![AI Shopping Assistant](ai_assistant.png)
+
+### Shopping Cart Page
+![Shopping Cart Page](cart_page.png)
+
+### Landing Page
+![Landing Page](landing_page.png)
+
+### Shop Homepage
+![Shop Homepage](shop_homepage.png)
+
+### Order Tracking Page
+![Order Tracking Page](order_tracking.png)
+
+### Product Detail Page
+![Product Detail Page](product_page.png)
+
+### Recommendations Page
+![Recommendations Page](recommendations_page.png)
+
+---
+
+## System Design Diagrams
+
+### Detailed Class Diagram
+![Detailed Class Diagram](class_diagram_detailed.png)
+
+### Main Class Diagram
+![Main Class Diagram](class_diagram_main.png)
+
+### Extended ER Diagram
+![Extended ER Diagram](er_diagram_extended.png)
+
+### Main ER Diagram
+![Main ER Diagram](er_diagram_main.png)
+
+### ER Relationship Diagram
+![ER Relationship Diagram](er_diagram_relations.png)
+
+### MVT Architecture Flowchart
+![MVT Architecture Flowchart](flowchart_mvt_architecture.png)
+
+### Recommendation Pipeline Flowchart
+![Recommendation Pipeline Flowchart](flowchart_recommendation_pipeline.png)
+
+### Request Flowchart
+![Request Flowchart](flowchart_request_flow.png)
+
+### Request-Response Sequence Diagram
+![Request Response Sequence Diagram](sequence_diagram_request_flow.png)
+
+---
+
+
