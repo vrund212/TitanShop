@@ -1,258 +1,278 @@
 # TitanShop
 
-TitanShop is a smart e-commerce web application built using Django. The platform provides a complete online shopping experience with product browsing, user authentication, shopping cart management, order tracking, admin-side management, reviews, personalized product recommendations, and an AI shopping assistant interface.
+TitanShop is a Django-based e-commerce web application with product browsing, user authentication, shopping cart management, order tracking, product reviews, personalized recommendations, and an AI shopping assistant interface.
 
-The project combines full-stack web development with recommendation system concepts such as TF-IDF and Matrix Factorization. It demonstrates how web technologies, database management, intelligent recommendation techniques, and AI-assisted product discovery can work together in a practical e-commerce platform.
-
----
+The project focuses on building a complete shopping workflow while also adding recommendation features using TF-IDF and Matrix Factorization concepts.
 
 ## Project Overview
 
-TitanShop allows users to browse products, view product details, add products to a cart, place orders, track order status, and receive personalized recommendations. The system also includes an admin dashboard where administrators can manage users, products, categories, orders, carts, reviews, and other application data.
+TitanShop allows users to browse products, view product details, add items to a cart, place orders, track order status, and receive product recommendations. It also includes an admin dashboard where administrators can manage users, products, categories, orders, carts, reviews, and other application data.
 
-A major focus of this project is personalization. Instead of showing only static product listings, TitanShop recommends products based on product content, user ratings, product categories, price ranges, and user interaction patterns. The AI shopping assistant further improves the user experience by helping users discover products through guided prompts and shopping-related queries.
+The recommendation system helps users discover products based on product content, ratings, categories, price ranges, and user interaction patterns. The AI shopping assistant adds a guided product discovery experience by helping users find products through shopping-related prompts and queries.
 
-The project follows Django’s Model-View-Template architecture, which separates the system into models, views, and templates. This makes the application easier to maintain, debug, and extend.
-
----
+The project follows Django’s Model-View-Template architecture and keeps the application organized across separate modules for products, orders, profiles, reviews, recommendations, and admin management.
 
 ## Key Features
 
-- User registration, login, and logout
-- User profile management
-- Product catalog with categories
-- Product detail pages with images, pricing, descriptions, ratings, and stock details
-- Shopping cart functionality
-- Checkout and order placement workflow
-- Order tracking system
-- Admin dashboard for backend management
-- Product reviews and ratings
-- Personalized product recommendation system
-- TF-IDF-based content recommendation
-- Matrix Factorization-based collaborative recommendation
-- AI shopping assistant interface for guided product discovery
-- Responsive frontend using HTML, CSS, Bootstrap, and JavaScript
-
----
-
-## Highlighted Feature: Recommendation System
-
-TitanShop includes a recommendation system designed to make the shopping experience more personalized and useful. In a normal e-commerce website, users usually browse products manually or depend only on category filters. TitanShop improves this experience by suggesting products that are more relevant to the user.
-
-The recommendation system uses two main approaches:
-
-### 1. TF-IDF Based Content Recommendation
-
-TF-IDF stands for Term Frequency-Inverse Document Frequency. In TitanShop, TF-IDF is used to analyze product-related text such as product names, descriptions, categories, and tags.
-
-This helps the system find products that are textually similar to the products a user has viewed, rated, or interacted with.
-
-For example, if a user shows interest in watches, the TF-IDF-based recommendation system can identify other products with similar product descriptions, category terms, or related keywords.
-
-TF-IDF helps TitanShop recommend products based on:
-
-- Product descriptions
-- Product names
-- Product categories
-- Product tags
-- Similar textual features
-
-This approach is especially useful when the system has limited user behavior data because it can still recommend products based on product content.
-
-### 2. Matrix Factorization Based Collaborative Recommendation
-
-Matrix Factorization is a collaborative filtering technique. It is used to understand hidden patterns between users and products based on user-product interactions such as ratings, reviews, or preferences.
-
-Instead of only comparing product descriptions, Matrix Factorization focuses on behavior patterns. It attempts to learn what types of products a user may prefer by analyzing how users interact with products.
-
-For example, if users who liked one product also liked other similar products, the system can use that pattern to recommend those products to another user with similar interests.
-
-Matrix Factorization helps TitanShop recommend products based on:
-
-- User ratings
-- Product reviews
-- User-product interaction patterns
-- Similar user behavior
-- Hidden preference relationships
-
-By combining TF-IDF and Matrix Factorization, TitanShop supports both content-based and collaborative recommendation logic. This makes the recommendation system more flexible and more intelligent than a simple category-based product listing.
-
----
-
-## Highlighted Feature: AI Shopping Assistant
-
-TitanShop also includes an AI shopping assistant interface that helps users discover products more easily. The assistant is designed as a conversational shopping support feature that appears on the user interface and guides users toward relevant product choices.
-
-The AI shopping assistant improves the shopping experience by allowing users to ask product-related questions in a natural way. Instead of manually searching through many product cards, users can ask for recommendations such as budget products, best-reviewed items, new arrivals, or products from a specific category.
-
-Example shopping queries include:
-
-- Best reviewed items
-- Budget picks
-- Electronics under a price range
-- New arrivals
-- Category-based suggestions
-- Product recommendations based on user interest
-
-The assistant interface supports a more interactive shopping experience. It acts as a product discovery layer between the user and the catalog, helping users quickly find products that match their needs.
-
-The AI shopping assistant is useful because it:
-
-- Reduces manual searching
-- Improves product discovery
-- Makes shopping more interactive
-- Helps users explore products by category, price, rating, or popularity
-- Complements the recommendation system
-- Makes the platform feel more intelligent and user-friendly
-
-Together, the recommendation system and AI shopping assistant make TitanShop more than a basic e-commerce website. They add personalization, guidance, and intelligent product discovery to the platform.
-
----
+* User registration, login, and logout
+* User profile management
+* Product catalog with categories
+* Product detail pages with images, pricing, descriptions, ratings, and stock details
+* Shopping cart functionality
+* Checkout and order placement workflow
+* Order tracking
+* Admin dashboard for backend management
+* Product reviews and ratings
+* Personalized product recommendations
+* TF-IDF-based content recommendations
+* Matrix Factorization-based collaborative recommendations
+* AI shopping assistant interface for product discovery
+* Responsive frontend using HTML, CSS, Bootstrap, and JavaScript
 
 ## Tech Stack
 
-| Category | Technologies Used |
-|---|---|
-| Backend | Python, Django |
-| Frontend | HTML, CSS, Bootstrap, JavaScript |
-| Database | SQLite |
-| Architecture | Django MVT Pattern |
-| Recommendation System | TF-IDF, Matrix Factorization |
-| AI Assistant | Conversational product discovery interface |
-| Admin Management | Django Admin Panel |
-| Version Control | Git, GitHub |
+| Category         | Technologies Used                          |
+| ---------------- | ------------------------------------------ |
+| Backend          | Python, Django                             |
+| Frontend         | HTML, CSS, Bootstrap, JavaScript           |
+| Database         | SQLite                                     |
+| Architecture     | Django MVT Pattern                         |
+| Recommendations  | TF-IDF, Matrix Factorization               |
+| AI Assistant     | Conversational product discovery interface |
+| Admin Management | Django Admin Panel                         |
+| Version Control  | Git, GitHub                                |
 
----
+## Recommendation System
 
-## System Architecture
+TitanShop includes a recommendation system that combines content-based and collaborative recommendation logic.
 
-TitanShop follows Django’s MVT architecture.
+### TF-IDF Content Recommendations
 
-### Model
+The TF-IDF module compares product text such as names, descriptions, categories, and tags. This helps the system recommend products that are similar to items a user has viewed, rated, reviewed, or interacted with.
 
-The model layer defines the structure of the database and represents the main entities of the system. These include users, profiles, products, categories, carts, orders, order details, reviews, and recommendation-related data. Django ORM is used to interact with the database using Python classes instead of writing raw SQL queries.
+This approach is useful when there is limited user interaction data because recommendations can still be generated from product information.
 
-### View
+### Matrix Factorization Recommendations
 
-The view layer handles the business logic of the application. It receives user requests, communicates with models, processes the required data, applies recommendation logic where needed, and sends that data to templates for rendering.
+The Matrix Factorization module uses user-product interaction patterns such as ratings, reviews, and preferences. It helps identify hidden relationships between users and products so the system can recommend items based on similar behavior patterns.
 
-### Template
+By combining TF-IDF and Matrix Factorization, TitanShop supports both product-content similarity and user-behavior-based recommendations.
 
-The template layer is responsible for the user interface. It displays dynamic HTML pages such as product listings, product details, cart pages, order tracking screens, recommendation pages, profile pages, and the AI shopping assistant interface.
+## AI Shopping Assistant
 
----
+TitanShop includes an AI shopping assistant interface for guided product discovery. Users can enter shopping-related queries or choose suggested prompts to find relevant products from the catalog.
+
+Example queries include:
+
+* Best reviewed items
+* Budget products
+* Electronics within a price range
+* New arrivals
+* Category-based suggestions
+* Product recommendations based on user interest
+
+The assistant helps users explore products by category, price, rating, and popularity without manually browsing through the full catalog.
 
 ## Main Modules
 
 ### User and Profile Module
 
-The user and profile module handles authentication and user-related information. Users can log in, manage their profile, and interact with the shopping system using their account.
+Handles user authentication and profile management. Users can create an account, log in, manage profile information, and interact with the shopping system.
 
 ### Product Module
 
-The product module manages product listings, product details, categories, pricing, images, stock information, and availability.
+Manages product listings, product details, categories, pricing, images, stock information, and availability.
 
 ### Cart Module
 
-The cart module allows users to add products to their cart, view selected items, update quantities, and proceed toward checkout.
+Allows users to add products to a cart, view selected items, update quantities, and continue to checkout.
 
 ### Order Module
 
-The order module manages order creation, order details, customer delivery information, order status, and order tracking.
+Handles order creation, order details, delivery information, order status, and order tracking.
 
 ### Review Module
 
-The review module allows users to rate and review products. These reviews help improve product credibility and also support recommendation logic by providing user preference data.
+Allows users to rate and review products. Reviews help improve product credibility and support recommendation logic.
 
 ### Recommendation Module
 
-TitanShop includes recommendation functionality using TF-IDF and Matrix Factorization concepts.
-
-- TF-IDF is used for content-based recommendations by comparing product names, descriptions, categories, and other textual information.
-- Matrix Factorization supports collaborative filtering by learning patterns from user-product interactions.
-- The recommendation page displays personalized suggestions based on products, categories, ratings, and price ranges that the user has interacted with positively.
+Generates personalized product suggestions using TF-IDF and Matrix Factorization. Recommendations are based on product content, user ratings, product categories, price ranges, and interaction patterns.
 
 ### AI Shopping Assistant Module
 
-The AI shopping assistant module provides a conversational interface for product discovery. It helps users ask shopping-related questions and receive relevant product suggestions. It supports queries related to budget products, best-reviewed items, category-based products, and new arrivals.
+Provides a conversational-style interface for product discovery. It helps users find products based on budget, category, ratings, popularity, and new arrivals.
 
 ### Admin Module
 
-The Django admin panel allows administrators to manage the system from a centralized backend interface. Admin users can add products, manage categories, monitor users, inspect orders, and manage reviews.
+Uses Django’s built-in admin panel to manage products, categories, users, orders, carts, reviews, and other application data.
 
----
+## System Workflow
 
-## Recommendation System Workflow
+A typical user workflow in TitanShop looks like this:
 
-The recommendation system follows this general workflow:
+1. User registers or logs in.
+2. User browses the product catalog.
+3. User views product details and reviews.
+4. User adds products to the cart.
+5. User places an order through the checkout workflow.
+6. User tracks the order status.
+7. User receives product recommendations based on product content and interaction patterns.
+8. User can use the AI shopping assistant to discover additional products.
+
+## Recommendation Workflow
+
+The recommendation system follows this general flow:
 
 1. User interacts with products by viewing, rating, reviewing, or browsing them.
-2. Product information such as descriptions, categories, names, and tags is collected.
-3. TF-IDF analyzes product text to find content similarity.
-4. Matrix Factorization analyzes user-product interaction behavior.
-5. The system generates recommended products based on content similarity and user preference patterns.
-6. Recommended products are displayed to the user on the recommendation page.
-
-This workflow allows TitanShop to provide more personalized shopping suggestions instead of only displaying static product lists.
-
----
+2. Product information such as names, descriptions, categories, and tags is used for content comparison.
+3. TF-IDF identifies products with similar text-based features.
+4. Matrix Factorization analyzes user-product interaction patterns.
+5. Recommended products are shown to the user on the recommendation page.
 
 ## AI Shopping Assistant Workflow
 
-The AI shopping assistant follows this general workflow:
+The AI shopping assistant follows this general flow:
 
-1. User opens the AI shopping assistant interface.
+1. User opens the shopping assistant interface.
 2. User enters a shopping-related query or selects a suggested prompt.
-3. The assistant interprets the shopping intent, such as budget, category, rating, or new arrivals.
-4. Relevant products are retrieved from the available product catalog.
-5. The assistant displays product suggestions in a user-friendly conversational format.
-6. The user can continue exploring products or navigate to product pages.
-
-This makes product discovery faster, easier, and more interactive.
-
----
+3. The assistant matches the query with catalog filters such as category, price, rating, or popularity.
+4. Relevant products are retrieved from the product catalog.
+5. Product suggestions are shown in a conversational format.
+6. User can continue exploring products or navigate to product detail pages.
 
 ## Admin Panel
 
-TitanShop uses Django’s built-in admin panel for backend data management. The admin panel is directly connected to the model layer, which makes it easy to create, update, view, and delete records.
+TitanShop uses Django’s built-in admin panel for backend management.
 
 Administrators can:
 
-- Add, update, and delete products
-- Manage product categories
-- View and manage users
-- Track orders
-- Manage carts and order details
-- Review ratings and feedback
-- Monitor recommendation-related data
-- Monitor application data from one centralized interface
-
----
+* Add, update, and delete products
+* Manage product categories
+* View and manage users
+* Track orders
+* Manage carts and order details
+* Review ratings and feedback
+* Monitor recommendation-related data
+* Manage application records from one centralized interface
 
 ## Project Structure
 
 ```text
 TitanShop/
-│
-├── TitanMarketplace/              # Main Django project settings and configuration
-├── blog/                          # Blog or informational module
-├── matrixfactorization/           # Matrix Factorization recommendation module
-├── order/                         # Order and cart-related functionality
-├── products/                      # Product-related logic
-├── profiles/                      # User profile module
-├── reviews/                       # Product reviews and ratings module
-├── shop/                          # Main shopping module
-├── static/                        # Static files such as CSS, JavaScript, and images
-├── templates/                     # HTML templates
-├── tfidf/                         # TF-IDF recommendation module
-├── screenshots/                   # Project screenshots and diagrams
-├── manage.py                      # Django project management file
-├── requirements.txt               # Python dependencies
-├── .gitignore                     # Ignored files and folders
-└── README.md                      # Project documentation
+|
+|-- TitanMarketplace/              # Main Django project settings and configuration
+|-- blog/                          # Blog or informational module
+|-- matrixfactorization/           # Matrix Factorization recommendation module
+|-- order/                         # Order and cart-related functionality
+|-- products/                      # Product-related logic
+|-- profiles/                      # User profile module
+|-- reviews/                       # Product reviews and ratings module
+|-- shop/                          # Main shopping module
+|-- static/                        # CSS, JavaScript, and image files
+|-- templates/                     # HTML templates
+|-- tfidf/                         # TF-IDF recommendation module
+|-- screenshots/                   # Project screenshots and diagrams
+|-- manage.py                      # Django project management file
+|-- requirements.txt               # Python dependencies
+|-- .gitignore                     # Ignored files and folders
+`-- README.md                      # Project documentation
+```
 
+## Setup Instructions
 
+Clone the repository and move into the project folder:
 
+```bash
+cd TitanShop
+```
 
+Create and activate a virtual environment:
 
+```bash
+python -m venv .venv
+```
 
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+macOS/Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run database migrations:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+Create a superuser for the admin panel:
+
+```bash
+python manage.py createsuperuser
+```
+
+Run the development server:
+
+```bash
+python manage.py runserver
+```
+
+Open the local development URL shown in the terminal.
+
+## Screenshots
+
+Add clean screenshots of the main pages here.
+
+Suggested screenshots:
+
+* Home page or product catalog
+* Product detail page
+* Shopping cart
+* Checkout or order tracking page
+* Recommendation page
+* AI shopping assistant interface
+* Admin dashboard
+
+Make sure screenshots only show sample data and do not include browser ads, personal bookmarks, private accounts, or sensitive information.
+
+## Data and Privacy Note
+
+This project is intended for demo and portfolio use. Do not commit real customer data, payment information, passwords, API keys, access tokens, private emails, or personal user information.
+
+Recommended files and folders to keep out of GitHub:
+
+```gitignore
+.env
+*.sqlite3
+db.sqlite3
+__pycache__/
+.venv/
+media/
+```
+
+## Future Improvements
+
+* Add payment gateway integration in test mode
+* Improve the shopping assistant with more advanced natural language handling
+* Add product search with filtering and sorting
+* Add wishlist functionality
+* Add email notifications for order updates
+* Add deployment configuration for a cloud platform
+* Add more test coverage for cart, order, and recommendation workflows
+
+## Conclusion
+
+TitanShop demonstrates a full-stack e-commerce workflow using Django, SQLite, Bootstrap, and recommendation system concepts. It combines standard shopping features with personalized recommendations and a guided shopping assistant to make product discovery easier for users.
