@@ -232,21 +232,6 @@ python manage.py runserver
 
 Open the local development URL shown in the terminal.
 
-## Screenshots
-
-Add clean screenshots of the main pages here.
-
-Suggested screenshots:
-
-* Home page or product catalog
-* Product detail page
-* Shopping cart
-* Checkout or order tracking page
-* Recommendation page
-* AI shopping assistant interface
-* Admin dashboard
-
-Make sure screenshots only show sample data and do not include browser ads, personal bookmarks, private accounts, or sensitive information.
 
 ## Data and Privacy Note
 
